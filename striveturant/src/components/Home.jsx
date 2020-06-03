@@ -17,8 +17,8 @@ class Home extends Component{
         return(
             
             <Container>
-                <Row className="justify-content-center mt-3">
-                    <Col xs={6}>
+                <Grid.Row className="justify-content-center mt-3 rol-cols">
+                    <Col xs={6} className="D-flex">
                         <h1> Welcome to Strivestrurant</h1>
                         <p className="lead">The best Italian dishes around </p>
                         <hr className="mt-2"></hr>
@@ -46,7 +46,7 @@ class Home extends Component{
                         </Carousel>
                     
                     </Col>
-                </Row>
+                </Grid.Row>
           </Container>
         );
         
