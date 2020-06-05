@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {Container, Row, Col, Carousel } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import items from "../data/menu.json";
+import DishComments from "./DishComments";
+import Reservations from "./Reservation";
+import ReservationForm from "./Form";
 
 
 
@@ -10,31 +13,37 @@ class Home extends Component{
         super(props);
         this.state={
             title: "Welcome to Strivesturant!",
+            selectedDish: null,
         };
     }
+    
+    selectNewDish = ((dish) =>{
+        this.setState({selectedDish: dish})
+    });
     
     render(){
         return(
             
             <Container>
-                <Grid.Row className="justify-content-center mt-3 rol-cols">
+                <Row className="justify-content-center mt-3 ">
                     <Col xs={6} className="D-flex">
-                        <h1> Welcome to Strivestrurant</h1>
+                        <h1> {this.state.title}</h1>
                         <p className="lead">The best Italian dishes around </p>
                         <hr className="mt-2"></hr>
-                        <p>Come visit us, we can only cook Postal</p>
+                        <p>Come visit us, we can only cook Posta</p>
                         <Carousel>
-                            {items.map((item)=>{
+                            {items.map((dish)=>{
                                 return(
-                                    <Carousel.Item key={item.id}>
+                                    <Carousel.Item key={dish.id}>
                                         <img
                                         className="d-block w-100"
-                                        src={item.image}
-                                        alt={item.name}
+                                        src={dish.image}
+                                        alt={dish.name}
+                                        onClick={() => this.selectNewDish(dish)}
                                         />
                                         <Carousel.Caption>
-                                        <h3>{item.name}</h3>
-                                        <p>{item.description}</p>
+                                        <h3>{dish.name}</h3>
+                                        <p>{dish.description}</p>
                                         </Carousel.Caption>
                                     </Carousel.Item>
                                 );
@@ -46,7 +55,22 @@ class Home extends Component{
                         </Carousel>
                     
                     </Col>
-                </Grid.Row>
+                </Row>
+                <Row className="mb-5">
+                    <Col xs={12}>
+                        <DishComments selectedDish={this.state.selectedDish} />
+                    </Col>
+                </Row>
+                <Row className="mb-5">
+                    <Col xs={12}>
+                        <ReservationForm />
+                    </Col>
+                </Row>
+                <Row className="mb-5">
+                    <Col xs={12}>
+                        <Reservations />
+                    </Col>
+                </Row>
           </Container>
         );
         
