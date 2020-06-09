@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import {Container, Row, Col, Carousel } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
+
 import items from "../data/menu.json";
 import DishComments from "./DishComments";
-import Reservations from "./Reservation";
-import ReservationForm from "./Form";
 
 
 
@@ -19,9 +17,11 @@ class Home extends Component{
     
     selectNewDish = ((dish) =>{
         this.setState({selectedDish: dish})
+        this.props.history.push("/details/" + dish.id)
     });
     
     render(){
+        console.log("Home Prosp", this.props)
         return(
             
             <Container>
@@ -61,16 +61,8 @@ class Home extends Component{
                         <DishComments selectedDish={this.state.selectedDish} />
                     </Col>
                 </Row>
-                <Row className="mb-5">
-                    <Col xs={12}>
-                        <ReservationForm />
-                    </Col>
-                </Row>
-                <Row className="mb-5">
-                    <Col xs={12}>
-                        <Reservations />
-                    </Col>
-                </Row>
+              
+               
           </Container>
         );
         

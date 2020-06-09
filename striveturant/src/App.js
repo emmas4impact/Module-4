@@ -1,17 +1,26 @@
 import React from 'react';
-import {BrowserRouter, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import './App.css';
 import Home from "./components/Home"
-import NavBar from "./components/Navbar"
+import Menu from "./components/Menu";
+import NavBar from "./components/Navbar";
+import DishDetail from './components/DishDetail';
+import Reservation from './components/Reservation'
 
 
 function App() {
   return (
-    <div className="App">
-      <NavBar title="Strivesturant" />
-      <Home />
     
-    </div>
+    <>
+      <Router>
+      <NavBar title="Strivesturant" />
+      <Route path="/" exact component={Home} />
+      <Route path="/menu" exact component={Menu} />
+      <Route path="/reservation" exact component={Reservation} />
+      <Route path="/details/:id" component={DishDetail} />
+      </Router>
+    
+    </>
   );
 }
 

@@ -1,57 +1,69 @@
-import React, {Component} from 'react';
-import ListGroup from 'react-bootstrap/ListGroup'
+import React from "react";
+import { Container, Spinner, ListGroup, Alert } from "react-bootstrap";
+import { format, parseISO } from "date-fns";
+import ReservationForm from './Form'
 
+class Reservations extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      reservations: [],
+      isLoading: true,
+      errMess: ""
+    };
+  }
 
-class Reservations extends Component{
-    state ={
-        reservations: []
-        
+  componentDidMount = async () => {
+    try {
+      let response = await fetch(
+        "https://striveschool.herokuapp.com/api/reservation"
+      );
+      let reservations = await response.json();
+      this.setState({
+        reservations,
+        isLoading: false,
+      })
+    } catch (err) {
+      this.setState({
+        isLoading: false,
+        errMess: err.message,
+      });
     }
-    
-    componentDidMount= async () =>{ 
-        //perfect place for fetches /async operation
-        console.log('I am in component did match method')
-        try{
-            let response = await fetch("https://striveschool.herokuapp.com/api/reservation")
-            let reservations = await response.json()
-            console.log("reservation are: ", reservations)
-            this.setState({
-                reservations
-            })
-        }catch (err) {
-            console.log("error", err)
-            
-        }
-        
-    }
-    
-    render(){
-        return(
-            <div className="mt-2">
-                <ListGroup>
-                {this.state.reservations.length >0 &&
-                    this.state.reservations.map((reservation, i) =>{
-                        return(
-                            <ListGroup.Item key={i}>
-                                From: {reservation.name},  for: {reservation.numberOfPersons} People
-                                at: {reservation.dateTime}
-                            
-                            </ListGroup.Item>
-                            
-                        )
-                    })
-                }
-                    
- 
-                </ListGroup>
-                {
-                    this.state.reservations.length ===0 && (<div>No reservations for your resturant</div>)
-                }
-            
-            
+  };
+
+  render() {
+    console.log('RESERVATION PROPS --> ', this.props)
+    return (
+      <Container>
+        <h3 className="mt-5 mb-3">RESERVATIONS</h3>
+        {this.state.isLoading && (
+          <div className="d-flex justify-content-center mb-5">
+            Fetching reservations...
+            <div>
+              <Spinner color="success" />
             </div>
-            
-        )
-    }
+          </div>
+        )}
+        {!this.state.isLoading && !this.state.errMess && (
+          <div className="mb-5">
+            {this.state.reservations.length > 0 &&
+              this.state.reservations.map((reservation, index) => (
+                <ListGroup key={index}>
+                  <ListGroup.Item>
+                    From: {reservation.name}, for {reservation.numberOfPersons}{" "}
+                    at{" "}
+                    {format(parseISO(reservation.dateTime), "yyyy-MM-dd | HH:mm")}
+                  </ListGroup.Item>
+                </ListGroup>
+              ))}
+            {this.state.reservations.length === 0 && <div>No reservations for your restaurant</div>}
+          </div>
+        )}
+        {this.state.errMess && <Alert variant="warning">Cannot load the reservations: {this.state.errMess}</Alert>}
+        <ReservationForm />
+      </Container>
+    );
+  }
 }
-export default Reservations
+
+export default Reservations;
