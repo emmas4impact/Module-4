@@ -14,12 +14,20 @@ class ReservationForm extends Component{
             dateTime: '',
             specialRequests: '',
             
-        }
+        },
         
-        
+        loading: false
     }
     submitReservation= async e =>{
         e.preventDefault();
+        this.setState({
+            loading:true
+        })
+        setTimeout(()=>{
+            this.setState({
+                loading:false
+            });
+        }, 2000)
         try{
             let response = await fetch("https://striveschool.herokuapp.com/api/reservation",{
                 method: 'POST',
@@ -73,6 +81,7 @@ class ReservationForm extends Component{
     }
     
     render(){
+        const {loading}=this.state;
         
         return(
             <div className="mt-5 mb-5">
@@ -169,7 +178,9 @@ class ReservationForm extends Component{
                     </Form.Group>
                     </Col>
                 </Row>
-                <Button type="submit">Submit</Button>
+                <Button type="submit" disabled={loading}>{loading && <i className="fas fa-spinner"></i>}
+                
+                Submit</Button>
         </Form>
             
             </div>

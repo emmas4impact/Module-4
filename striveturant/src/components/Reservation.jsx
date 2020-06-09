@@ -33,8 +33,8 @@ class Reservations extends Component{
                     this.state.reservations.map((reservation, i) =>{
                         return(
                             <ListGroup.Item key={i}>
-                                From: {reservation.name},  for {reservation.numberOfPersons}
-                                at {reservation.dateTime}
+                                From: {reservation.name},  for: {reservation.numberOfPersons} People
+                                at: {reservation.dateTime}
                             
                             </ListGroup.Item>
                             
